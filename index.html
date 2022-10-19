@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script> -->
+    <style>
+        
+        .shadow {
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+        }
+
+        #sombrita {
+            margin-top: 10em;
+        }
+        
+        .login {
+            color: #1b4867;
+            border: 1px #1b4867 solid;
+            border-radius: 0.25em;
+        }
+    
+
+        .form-control:focus {
+            border: 1px #1b4867 solid;
+            box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+        }
+
+        .form-floating label {
+            color: #1b4867;
+            opacity: 0.8;
+        }
+
+        * {
+            font-size: 1em;
+            font-family: Arial, Helvetica, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            color: #1b4867;
+            background-color: #f8f9fc;
+        }
+
+        .black-screen {
+            background-color: black;
+            opacity: 0.5;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            height: 100vh;
+            display: none;
+            z-index: 1;
+            animation: 0.30s opacity-change;
+        }
+
+        .shortcuts-section {
+            margin-bottom: 1em;  
+        }
+
+        .home {
+            width: 95%;
+            margin: auto;
+            margin-top: 1em;
+        }
+
+        /* INFO */
+        .user-info {
+            background-color: #fff;
+            padding: 1em;
+            display: flex;
+            flex-direction: column;
+            border-radius: 0.25em;
+            margin-bottom: 2em;
+        }
+
+        .connection-info {
+            display: flex;
+            justify-content: flex-end;
+            align-items: baseline;
+            flex-direction: row;
+            gap: 0.5em;
+            margin-top: 1em;
+        }
+
+        .info-text {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .group-info {
+            margin-top: 0.5em;
+        }
+
+        .group-info p {
+            margin-bottom: 0.25em;
+        }
+
+        .connection-info p:first-child {
+            font-weight: 700;
+        }
+
+        /* SHORTCUTS */
+        .shortcuts-title h1 {
+            font-size: 2rem;
+        }
+
+        .shortcuts-title p {
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .shortcuts {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-gap: 1em;
+            flex-wrap: wrap;
+            margin-top: 1.5em;
+        }
+
+        .shortcuts-item {
+            /* border: 1px #1b4867 solid; */
+            display: flex;
+            flex-direction: column;
+            border-radius: 0.25em;
+            background-color: #fff;           
+        }
+
+        .item-left {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            flex-direction: row-reverse;
+            background-color: #1b4867;
+            color: #fff;
+            padding: 1em;
+            border-radius: 0.25em 0.25em 0 0;
+        }
+
+        .item-right {
+            background-color: #fff;
+            color: #1b4867;
+            padding: 1em;
+            border-radius: 0 0 0.25em 0.25em;
+        }
+
+        .shortcuts-item ul {
+            margin-top: 0.75em;
+            list-style-type: none;
+            display: flex;
+        }
+
+        .shortcuts-item li {
+            margin-bottom: 0.50rem;
+            cursor: pointer;
+            width: 50%;
+            text-align: center;
+        }
+
+        .shortcuts-item i {
+            font-size: 2rem;
+            color: #fff;
+        }
+
+        .bi-chevron-down, .bi-chevron-up {
+            display: none;
+        }
+
+        .shortcuts-item h1 {
+            margin-top: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .show-options {
+            width: 100%;
+            height: 50vh;
+            background-color: white;
+            border-radius: 0.75em 0.75em 0 0;
+            position: absolute;
+            bottom: 0;
+            display: none;
+            z-index: 2;
+            animation: 0.30s slide-up;
+        }
+
+        .dash {
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .show-options > div {
+            border-radius: 0.75em 0.75em 0 0;
+        }
+
+        @media screen and (min-width: 1024px) {
+            .shortcuts {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media screen and (max-width: 600px) {
+            .shortcuts {
+                grid-template-columns: repeat(1, 1fr);
+            }
+
+            .item-left {
+                border-radius: 0.25em;
+            }
+
+            .item-right {
+                display: none;
+            }
+        }
+
+        /* Media screen para pantañas muy pequeñas */
+        @media screen and (max-width: 426px) {
+            .shortcuts-item i {
+                font-size: 1.5rem;
+            }
+
+            .shortcuts-item h1 {
+                margin-top: 0.5rem;
+                font-size: 1rem;
+            }
+
+            .shortcuts-title h1 {
+                font-size: 1.5rem;
+            }
+
+            .info-text {
+                font-size: 1rem;
+            }
+
+            .connection-info {
+                font-size: 0.75rem;
+            }
+        }
+
+        /* Animaciones */
+        @keyframes slide-up {
+            0% {
+                height: 0vh;
+            }
+
+            100% {
+                height: 50vh;
+            }
+        }
+
+        @keyframes slide-down {
+            0% {
+                height: 50vh;
+            }
+
+            100% {
+                height: 0vh;
+            }          
+        }
+
+        @keyframes opacity-change {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 0.5;
+            }          
+        }
+
+        /* Estilos para toggle de JS */
+        .show-content {
+            display: block;
+            transition: all 1s ease;
+        }
+
+        .options-list {
+            display: block;
+        }
+
+        .options-list ul {
+            list-style-type: none;
+        }
+
+        .options-list li {
+            font-size: 1.25rem;
+            margin-bottom: 0.5em;
+        }
+
+        .show-content {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- <div style="width: 80%; margin: auto">
+      <div class="form-floating mb-3 mt-3">
+        <input type="email" class="form-control login" id="floatingInput" placeholder="name@example.com">
+        <label for="floatingInput">Email address</label>
+      </div>
+      <div class="form-floating">
+        <input type="password" class="form-control login" id="floatingPassword" placeholder="Password">
+        <label for="floatingPassword">Password</label>
+      </div>
+    </div> -->
+    <div class="black-screen"></div>
+    <div class="home">
+        <div class="user-info">
+            <div class="profile-info">
+                <p class="info-text">Diego Alberto Pestana Rodrigues</p>
+                <div class="group-info">
+                    <p>Gerencia de Proyectos Especiales</p>
+                    <p>G00000053</p>
+                </div>
+            </div>
+            <div class="connection-info">
+                <p>Última conexión:</p>
+                <p>10/10/2022 - 03:22:45</p>
+            </div>
+        </div>
+        <div class="shortcuts-section">
+            <div class="shortcuts-title">
+                <h1>Accesos directos</h1>
+                <p>Agilice el proceso</p>
+            </div>
+            <div class="shortcuts">
+                <div class="shortcuts-item shadow">
+                    <div class="item-left">
+                        <i class="bi bi-card-list"></i>
+                        <i class="bi bi-chevron-down chevron"></i>
+                        <h1>Cuentas</h1>
+                    </div>
+                    <div class="item-right">
+                        <ul>
+                            <li>Consulta</li>
+                            <li>Editar</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="shortcuts-item shadow">
+                    <div class="item-left">
+                        <i class="bi bi-wallet2"></i>
+                        <i class="bi bi-chevron-down chevron"></i>
+                        <h1>Servicios</h1>
+                    </div>
+                    <div class="item-right">
+                        <ul>
+                            <li>Carga de Información</li>
+                            <li>Autorización</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="shortcuts-item shadow">
+                    <div class="item-left">
+                        <i class="bi bi-arrow-left-right"></i>
+                        <i class="bi bi-chevron-down chevron"></i>
+                        <h1>Transferencias</h1>
+                    </div>
+                    <div class="item-right">
+                        <ul>
+                            <li>Carga de Información</li>
+                            <li>Autorización</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="shortcuts-item shadow">
+                    <div class="item-left">
+                        <i class="bi bi-collection"></i>
+                        <i class="bi bi-chevron-down chevron"></i>
+                        <h1>Pagos en lote</h1>
+                    </div>
+                    <div class="item-right">
+                        <ul>
+                            <li>Carga de Archivo</li>
+                            <li>Autorización</li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- 
+                <div class="shortcuts-item">
+                    <div class="item-left">
+                        <i class="bi bi-people"></i>
+                        <i class="bi bi-chevron-down chevron"></i>
+                        <h1>Proveedores</h1>
+                    </div>
+                    <div class="item-right">
+                        <ul>
+                            <li>Carga de Archivo</li>
+                            <li>Autorización</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="shortcuts-item">
+                    <div class="item-left">
+                        <i class="bi bi-person-badge"></i>
+                        <i class="bi bi-chevron-down chevron"></i>
+                        <h1>Nómina</h1>
+                    </div>
+                    <div class="item-right">
+                        <ul>
+                            <li>Carga de Archivo</li>
+                            <li>Autorización</li>
+                        </ul>
+                    </div>
+                </div> 
+                -->
+            </div>
+        </div>
+    </div>
+    <div class="show-options">
+        <div class="dash">
+            <i class="bi bi-dash"></i>
+        </div>
+        <div class="options-body">
+        </div>
+    </div>
+    <script>
+        const shortcutsItems = document.querySelectorAll(".shortcuts-item");
+        const userInfo = document.querySelector(".user-info");
+        const chevron = document.querySelectorAll(".bi-chevron-down");
+        const showOptions = document.querySelector(".show-options");
+        const showOptionsBody = document.querySelector(".options-body");
+        const blackScreen = document.querySelector(".black-screen");
+        const dash = document.querySelector(".dash");
+        let lastItem = null;
+
+        const removeOptions = () => {
+            if(lastItem != null) {
+                lastItem.classList.remove("options-list");
+            }
+            blackScreen.classList.remove("show-content");
+            showOptions.classList.remove("show-content");
+        }
+
+        // Función que le coloca a cada shortcut un listener
+        shortcutsItems.forEach((shortcut) => {
+            const contentHeader = shortcut.querySelector(".item-left");
+            const contentBody = shortcut.querySelector(".item-right");
+            
+            contentHeader.addEventListener("click", () => {
+                showOptionsBody.appendChild(contentBody);
+                lastItem = contentBody;
+                contentBody.classList.add("options-list");
+                blackScreen.classList.add("show-content");
+                showOptions.classList.add("show-content");  
+            })
+        });
+
+        blackScreen.addEventListener("click", () => {
+            removeOptions();
+        })
+
+        dash.addEventListener("click", () => {
+            removeOptions();
+        })
+
+        dash.addEventListener("touchmove", () => {
+            removeOptions();
+        })
+    </script>
+</body>
+</html>
