@@ -140,9 +140,11 @@
             color: #fff;
             padding: 1em;
             border-radius: 0.25em 0.25em 0 0;
+            pointer-events: none;
         }
 
         .item-right {
+            display: block;
             background-color: #fff;
             color: #1b4867;
             padding: 1em;
@@ -152,14 +154,11 @@
         .shortcuts-item ul {
             margin-top: 0.75em;
             list-style-type: none;
-            display: flex;
         }
 
         .shortcuts-item li {
             margin-bottom: 0.50rem;
             cursor: pointer;
-            width: 50%;
-            text-align: center;
         }
 
         .shortcuts-item i {
@@ -201,6 +200,10 @@
             .shortcuts {
                 grid-template-columns: repeat(3, 1fr);
             }
+
+            .item-left {
+                pointer-events: auto;
+            }
         }
 
         @media screen and (max-width: 600px) {
@@ -210,6 +213,7 @@
 
             .item-left {
                 border-radius: 0.25em;
+                pointer-events: auto;
             }
 
             .item-right {
@@ -287,8 +291,9 @@
         }
 
         .options-list li {
-            font-size: 1.25rem;
-            margin-bottom: 0.5em;
+            padding-left: 1em;
+            font-size: 1.5rem;
+            margin-top: 1em;
         }
 
         .show-content {
@@ -419,6 +424,13 @@
         </div>
     </div>
     <script>
+        window.addEventListener("resize", () => {
+            if(window.screen.width > 600 && showOptions.classList.contains("show-content")) {
+                showOptions.classList.toggle("show-content");
+                blackScreen.classList.toggle("show-content");
+            }
+        });
+
         const shortcutsItems = document.querySelectorAll(".shortcuts-item");
         const userInfo = document.querySelector(".user-info");
         const chevron = document.querySelectorAll(".bi-chevron-down");
@@ -426,14 +438,25 @@
         const showOptionsBody = document.querySelector(".options-body");
         const blackScreen = document.querySelector(".black-screen");
         const dash = document.querySelector(".dash");
-        let lastItem = null;
+        let lastItem = document.createElement("div");
+        
+        // Animaciones de salida
+        const optionsOut = [{ height: '50vh' }, { height: '0vh' }];
+        const optionsOutTiming = { duration: 225, iterations: 1 };
+
+        const screenOut = [{ opacity: '0.5' }, { opacity: '0' }];
+        const screenOutTiming = { duration: 225, iterations: 1 };
 
         const removeOptions = () => {
-            if(lastItem != null) {
-                lastItem.classList.remove("options-list");
-            }
-            blackScreen.classList.remove("show-content");
-            showOptions.classList.remove("show-content");
+            blackScreen.animate(screenOut, screenOutTiming);
+            showOptions.animate(optionsOut, optionsOutTiming);
+            setTimeout(() => {
+                if (lastItem != null) {
+                    lastItem.classList.remove("options-list");;
+                }
+                blackScreen.classList.remove("show-content");
+                showOptions.classList.remove("show-content");
+            }, 200);
         }
 
         // Función que le coloca a cada shortcut un listener
@@ -442,25 +465,25 @@
             const contentBody = shortcut.querySelector(".item-right");
             
             contentHeader.addEventListener("click", () => {
-                showOptionsBody.appendChild(contentBody);
-                lastItem = contentBody;
-                contentBody.classList.add("options-list");
+                lastItem.innerHTML = contentBody.innerHTML;
+                showOptionsBody.appendChild(lastItem);
+                lastItem.classList.add("options-list");
                 blackScreen.classList.add("show-content");
-                showOptions.classList.add("show-content");  
+                showOptions.classList.add("show-content");
             })
         });
 
         blackScreen.addEventListener("click", () => {
             removeOptions();
-        })
+        });
 
         dash.addEventListener("click", () => {
             removeOptions();
-        })
+        });
 
         dash.addEventListener("touchmove", () => {
             removeOptions();
-        })
+        });
     </script>
 </body>
 </html>
